@@ -6,6 +6,8 @@ const puerto = process.env.PUERTO;
 
 const apiRouter = require('./api/apimain');
 
+app.use(express.json());
+
 
 
 app.listen(puerto, function(error) {
