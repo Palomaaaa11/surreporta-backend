@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('express');
 
 const express = require('express');
 const app = express();
@@ -7,6 +8,8 @@ const puerto = process.env.PUERTO;
 const apiRouter = require('./api/apimain');
 
 app.use(express.json());
+
+app.use("/api", apiRouter);
 
 
 

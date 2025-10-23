@@ -14,9 +14,9 @@ router.post("/", function(req, res, next){
 
     let sql = 'INSERT INTO usuarios (nombre, email, pass)  VALUES (?, ?, ?)';
 
-    //const passHasheada = hashPass(pass);
+    const passHasheada = hashPass(pass);
 
-    db.query(sql, [nombre, email, pass])
+    db.query(sql, [nombre, email, passHasheada])
     .then(() =>{
         res.status(201).send("Usuario guardado");
     })
@@ -32,7 +32,7 @@ router.get("/", function(req, res, next){
 
     db.query(sql)
     .then(([usuarios]) => {
-        res.status.json({usuarios})
+        res.status(200).json({usuarios})
     })
     .catch((error) =>{
         console.error(error);
@@ -41,7 +41,6 @@ router.get("/", function(req, res, next){
 })
 
 
-NO ME ANDA EL NPMRUNDEV
 
 
 module.exports = router;
