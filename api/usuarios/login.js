@@ -11,7 +11,7 @@ router.post("/", function(req, res, next){
 
     let sql = "SELECT id_usuario, nombre, email, pass, rol FROM usuarios WHERE email = ?";
 
-    db.query(sql, [user])
+    db.query(sql, [email])
     .then(([usuarios]) =>{
         if(usuarios.length === 1){
             const usuario = usuarios[0];
@@ -33,8 +33,12 @@ router.post("/", function(req, res, next){
             }
         }else{
             console.log("usuario no encontrado");
-            
+            res.status(401).send("Usuario o contraseña incorrectos");
         }
+    })
+    .catch((error) =>{
+        console.error(error);
+        res.status(500).send("Ocurrió un error");
     })
 })
 
