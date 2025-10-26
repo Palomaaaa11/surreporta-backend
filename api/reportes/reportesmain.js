@@ -11,7 +11,11 @@ const dirArchivos = path.join(__dirname, "..", "..", "archivos");
 
 router.get("/", function(req, res, next){
 
-    const sql = 'SELECT r.* , u.nombre AS nombre_usuario FROM reportes AS r JOIN usuarios AS u ON r.id_usuario = u.id_usuario ORDER BY r.fecha_creacion DESC';
+    const sql = `
+    SELECT r.*, c.nombre AS categoria
+    FROM reportes r
+    LEFT JOIN categorias c ON r.id_categoria = c.id_categoria
+    ORDER BY r.fecha_creacion DESC;`;
 
     db.query(sql)
     .then((resultado) => {
@@ -21,6 +25,27 @@ router.get("/", function(req, res, next){
         console.error("Error al obtener los reportes: ", error);
         res.status(500).send("Error al obtener los reportes");
     });
+});
+
+router.post("/mis-reportes", function (req, res, next) {
+    const { id_usuario } = req.body; 
+
+    const sql = `
+        SELECT r.*, c.nombre AS categoria
+        FROM reportes r
+        LEFT JOIN categorias c ON r.id_categoria = c.id_categoria
+        WHERE r.id_usuario = ?
+        ORDER BY r.fecha_creacion DESC;
+    `;
+
+    db.query(sql, [id_usuario])
+        .then((resultado) => {
+            res.status(200).json(resultado);
+        })
+        .catch((error) => {
+            console.error("Error al obtener los reportes del usuario: ", error);
+            res.status(500).send("Error al obtener los reportes del usuario");
+        });
 });
 
 router.post("/", function(req, res, next){
