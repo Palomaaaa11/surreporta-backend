@@ -1,15 +1,24 @@
 require('dotenv').config();
 const path = require('express');
+const cors = require("cors");
 
 const express = require('express');
 const app = express();
 const puerto = process.env.PUERTO;
-
-const apiRouter = require('./api/apimain');
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
 app.use(express.json());
 
+const apiRouter = require('./api/apimain');
+
+
+
 app.use("/api", apiRouter);
+
 
 
 

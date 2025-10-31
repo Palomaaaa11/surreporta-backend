@@ -18,7 +18,7 @@ router.post("/", function(req, res, next){
             if(verificarPass(pass, usuario.pass)){
                
                 const datos ={
-                    id: usuario.id,
+                    id: usuario.id_usuario,
                     nombre : usuario.nombre,
                     email : usuario.email,
                     rol : usuario.rol
@@ -26,7 +26,7 @@ router.post("/", function(req, res, next){
 
                 const token = generarToken(TOKEN_SECRET, 6, datos);
 
-                res.json({status:"ok", token})
+                res.json({status:"ok", token, rol: usuario.rol});
             }else{
                 console.log("Contraseña incorrecta");
                 res.status(401).send("usuario o contraseña incorrecto");
